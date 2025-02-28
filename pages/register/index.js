@@ -1,10 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppIcon from "@/graphics/app-icon.png";
 import Image from "next/image";
 import Link from "next/link";
 import Styles from "@/styles/Home.module.css";
+import { useRouter } from "next/router";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:3001/users/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+    if (res.ok) {
+      setName("");
+      setEmail("");
+      setPassword("");
+      router.push("/login");
+    } else {
+      throw new Error("FAILED: Could not process request!");
+    }
+  };
+
   useEffect(() => {
     document.body.style.backgroundColor = "rgb(14, 13, 14)";
     document.title = "Melit - Register";
@@ -54,6 +79,10 @@ const Register = () => {
                 id="name"
                 style={{ backgroundColor: "rgb(76, 45, 89)" }}
                 placeholder="Name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
               />
             </div>
 
@@ -64,6 +93,10 @@ const Register = () => {
                 id="email"
                 style={{ backgroundColor: "rgb(76, 45, 89)" }}
                 placeholder="Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
               />
             </div>
 
@@ -74,18 +107,22 @@ const Register = () => {
                 id="password"
                 style={{ backgroundColor: "rgb(76, 45, 89)" }}
                 placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
             </div>
 
             <div className="text-light col-md-4 my-2">
               <button
-                type="submit"
                 class="btn"
                 style={{
                   backgroundColor: "#9B59B6",
                   color: "white",
                   width: "100%",
                 }}
+                onClick={handleSubmit}
               >
                 Register
               </button>

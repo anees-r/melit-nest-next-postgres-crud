@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppIcon from "@/graphics/app-icon.png";
 import Link from "next/link";
 import Image from "next/image";
 import Styles from "@/styles/Home.module.css";
 
 const Login = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {};
+
   useEffect(() => {
     document.body.style.backgroundColor = "rgb(14, 13, 14)";
     document.title = "Melit - Login";
@@ -69,13 +75,13 @@ const Login = () => {
 
             <div className="text-light col-md-4 my-2">
               <button
-                type="submit"
                 class="btn"
                 style={{
                   backgroundColor: "#9B59B6",
                   color: "white",
                   width: "100%",
                 }}
+                onClick={handleSubmit}
               >
                 Login
               </button>

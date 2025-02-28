@@ -3,7 +3,27 @@ import React from "react";
 import Styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import CrossIconW from "@/graphics/cross-icon-w.png";
+import { useState } from "react";
+
 const CreateBook = (props) => {
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = async () => {
+    const res = await fetch("http://localhost:3001/books/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title }),
+    });
+
+    if (res.ok) {
+      setTitle("");
+      props.onClose();
+    } else {
+      throw new Error("FAILED: Could not process request!");
+    }
+  };
   return (
     <div
       className={`p-5 text-light ${Styles.customBg} position-absolute top-50 start-50 translate-middle`}
@@ -22,20 +42,24 @@ const CreateBook = (props) => {
             width={30}
             style={{ cursor: "pointer" }}
             onClick={props.onClose}
+            alt="Close Icon"
           ></Image>
         </div>
 
         <form class="d-flex">
           <input
             class="form-control me-2"
-            type="search"
+            type="text"
             placeholder="Title"
-            aria-label="Search"
+            value={title}
+            onChange={(event) => {
+              setTitle(event.target.value);
+            }}
           />
           <button
             class="btn"
             style={{ backgroundColor: "#9B59B6", color: "white" }}
-            type="submit"
+            onClick={handleSubmit}
           >
             Add
           </button>

@@ -1,19 +1,8 @@
 import Head from "next/head";
-import { Geist, Geist_Mono } from "next/font/google";
 import { useState, useEffect } from "react";
 import CreateBook from "@/components/home/CreateBook";
 import AddButton from "@/components/home/AddButton";
 import Books from "@/components/books/Books";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function Home() {
   const [openDialogue, setOpenDialogue] = useState(false);
