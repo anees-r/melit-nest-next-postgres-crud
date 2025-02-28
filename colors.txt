@@ -1,0 +1,5 @@
+light: #f8f9fa
+dark: rgb(14, 13, 14)
+purple: #9B59B6
+dim: rgb(44, 38, 44)
+purple:rgb(76, 45, 89)

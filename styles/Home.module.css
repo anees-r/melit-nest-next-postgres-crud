@@ -107,6 +107,21 @@ a.secondary {
 .footer img {
   flex-shrink: 0;
 }
+.customBg{
+  color: white;
+  background: rgb(14, 13, 14);
+}
+
+.customBgCard{
+  color: white;
+  background: rgb(38, 33, 39);
+}
+
+.blurbg{
+  background: #9c59b649;
+  filter: blur(100px);
+  pointer-events: none; /* Allows clicks to go through */
+}
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
