@@ -11,7 +11,7 @@ const AddButton = (props) => {
       style={{ borderRadius: "100px", zIndex: "800" }}
       onClick={props.onClick}
     >
-      <Image src={AddIcon} width={40} height={40}></Image>
+      <Image src={AddIcon} width={40} height={40} alt="add book icon"></Image>
     </button>
   );
 };

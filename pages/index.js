@@ -30,7 +30,9 @@ export default function Home() {
       </Head>
 
       <AddButton onClick={setTrue} />
-      {openDialogue && <CreateBook onClose={setFalse} />}
+      {openDialogue && (
+        <CreateBook onClose={setFalse} type={"new"} bookId={""} />
+      )}
       <h3 className="px-5" style={{ color: "#9B59B6", marginBottom: "30px" }}>
         Melit - Browse Books!
       </h3>

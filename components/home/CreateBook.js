@@ -3,12 +3,21 @@ import React from "react";
 import Styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import CrossIconW from "@/graphics/cross-icon-w.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const CreateBook = (props) => {
   const [title, setTitle] = useState("");
+  const [createNew, setCreateNew] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (props.type === "new") {
+      setCreateNew(true);
+    }
+  }, []);
+
+  const handleNew = async () => {
     const res = await fetch("http://localhost:3001/books/create", {
       method: "POST",
       headers: {
@@ -24,6 +33,32 @@ const CreateBook = (props) => {
       throw new Error("FAILED: Could not process request!");
     }
   };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const res = await fetch(
+      `http://localhost:3001/books/update/${props.bookId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title }),
+      }
+    );
+
+    if (res.ok) {
+      setTitle("");
+      if (props.type === "new") {
+        props.onClose();
+      } else {
+        router.push("/");
+      }
+    } else {
+      throw new Error("FAILED: Could not process request!");
+    }
+  };
+
   return (
     <div
       className={`p-5 text-light ${Styles.customBg} position-absolute top-50 start-50 translate-middle`}
@@ -46,10 +81,11 @@ const CreateBook = (props) => {
           ></Image>
         </div>
 
-        <form class="d-flex">
+        <form className="d-flex">
           <input
-            class="form-control me-2"
+            className="form-control me-2"
             type="text"
+            id="title"
             placeholder="Title"
             value={title}
             onChange={(event) => {
@@ -57,11 +93,12 @@ const CreateBook = (props) => {
             }}
           />
           <button
-            class="btn"
+            className="btn"
+            type="submit"
             style={{ backgroundColor: "#9B59B6", color: "white" }}
-            onClick={handleSubmit}
+            onClick={createNew ? handleNew : handleEdit}
           >
-            Add
+            {createNew ? "Add" : "Update"}
           </button>
         </form>
       </div>

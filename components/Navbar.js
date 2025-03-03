@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import AppIcon from "@/graphics/app-icon.png";
-import UserIcon from "@/graphics/user-icon.png";
+import LogoutIcon from "@/graphics/logout-icon.png";
 import Image from "next/image";
 import Styles from "@/styles/Home.module.css";
 
@@ -33,7 +33,7 @@ const Navbar = () => {
           melit.
         </Link>
         <Link className="mx-4" href="/login">
-          <Image src={UserIcon} alt="User Profile" width={25} height={25} />
+          <Image src={LogoutIcon} alt="Logout" width={25} height={25} />
         </Link>
       </div>
     </div>

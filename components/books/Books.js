@@ -19,8 +19,8 @@ const Books = ({ uid = "" }) => {
     }
     fetchData();
     document.body.style.backgroundColor = "rgb(14, 13, 14)";
-    document.title = "Melit - User Books";
-  }, [uid]);
+    document.title = "Melit - Books";
+  }, [uid, books]);
   return (
     <div className="px-5">
       <h4 className="text-" style={{ color: "#9B59B6" }}>
@@ -32,6 +32,7 @@ const Books = ({ uid = "" }) => {
           return (
             <div className="col-md-4 my-2" key={element.book_id}>
               <BookItem
+                bookId={element.book_id}
                 title={element.book_title}
                 by={element.user_name}
                 userId={element.user_id}
