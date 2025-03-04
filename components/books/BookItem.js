@@ -5,9 +5,11 @@ import Image from "next/image";
 import EditIcon from "@/graphics/edit-icon.png";
 import DeleteIcon from "@/graphics/delete-icon.png";
 import { useRouter } from "next/router";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 const BookItem = (props) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleDelete = async () => {
     const res = await fetch(
@@ -21,6 +23,14 @@ const BookItem = (props) => {
       throw new Error("FAILED: Could not process request!");
     }
   };
+
+  const deleteMutation = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+      // queryClient.refetchQueries(["books"]);
+    },
+  });
 
   return (
     <div>
@@ -58,7 +68,7 @@ const BookItem = (props) => {
               width={20}
               height={20}
               style={{ cursor: "pointer" }}
-              onClick={handleDelete}
+              onClick={deleteMutation.mutate}
             ></Image>
           </div>
         </div>

@@ -1,15 +1,19 @@
-"use-client";
+// "use-client";
 import React from "react";
 import Styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import CrossIconW from "@/graphics/cross-icon-w.png";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Error from "next/error";
 
 const CreateBook = (props) => {
   const [title, setTitle] = useState("");
   const [createNew, setCreateNew] = useState(false);
   const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (props.type === "new") {
@@ -29,9 +33,8 @@ const CreateBook = (props) => {
     if (res.ok) {
       setTitle("");
       props.onClose();
-    } else {
-      throw new Error("FAILED: Could not process request!");
     }
+    return res.json;
   };
 
   const handleEdit = async (e) => {
@@ -54,10 +57,25 @@ const CreateBook = (props) => {
       } else {
         router.push("/");
       }
+      return res.json;
     } else {
       throw new Error("FAILED: Could not process request!");
     }
   };
+
+  const newMutation = useMutation({
+    mutationFn: handleNew,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: handleEdit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
+  });
 
   return (
     <div
@@ -92,14 +110,13 @@ const CreateBook = (props) => {
               setTitle(event.target.value);
             }}
           />
-          <button
+          <div
             className="btn"
-            type="submit"
             style={{ backgroundColor: "#9B59B6", color: "white" }}
-            onClick={createNew ? handleNew : handleEdit}
+            onClick={createNew ? newMutation.mutate : editMutation.mutate}
           >
             {createNew ? "Add" : "Update"}
-          </button>
+          </div>
         </form>
       </div>
     </div>
