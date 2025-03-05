@@ -14,13 +14,20 @@ const BookItem = (props) => {
   const handleDelete = async () => {
     const res = await fetch(
       `http://localhost:3001/books/delete/${props.bookId}`,
-      { method: "DELETE" }
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
 
     if (res.ok) {
       router.push("/");
     } else {
-      throw new Error("FAILED: Could not process request!");
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message || "Error!");
     }
   };
 
@@ -81,3 +88,4 @@ const BookItem = (props) => {
 };
 
 export default BookItem;
+// export default CustomAuth(BookItem);

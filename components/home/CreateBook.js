@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Error from "next/error";
+import CustomAuth from "../hoc/CustomAuth";
 
 const CreateBook = (props) => {
   const [title, setTitle] = useState("");
@@ -26,6 +27,7 @@ const CreateBook = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        custom_auth: props.custom_auth,
       },
       body: JSON.stringify({ title }),
     });
@@ -33,7 +35,12 @@ const CreateBook = (props) => {
     if (res.ok) {
       setTitle("");
       props.onClose();
+    } else {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message || "Error!");
     }
+
     return res.json;
   };
 
@@ -45,6 +52,7 @@ const CreateBook = (props) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          // custom_auth: props.custom_auth,
         },
         body: JSON.stringify({ title }),
       }
@@ -59,7 +67,9 @@ const CreateBook = (props) => {
       }
       return res.json;
     } else {
-      throw new Error("FAILED: Could not process request!");
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message || "Error!");
     }
   };
 
@@ -123,4 +133,4 @@ const CreateBook = (props) => {
   );
 };
 
-export default CreateBook;
+export default CustomAuth(CreateBook);

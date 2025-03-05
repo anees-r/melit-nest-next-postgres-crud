@@ -1,14 +1,11 @@
 "use-cliet";
 import React from "react";
 import BookItem from "./BookItem";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const Books = ({ uid = "" }) => {
-  const [books, setBooks] = useState([]);
-
   const fetchData = async () => {
-    console.log("fetching data");
     const api =
       uid === ""
         ? "http://localhost:3001/books/all"
@@ -20,8 +17,6 @@ const Books = ({ uid = "" }) => {
   };
 
   const { data = [] } = useQuery({ queryKey: ["books"], queryFn: fetchData });
-
-  console.log(data);
 
   useEffect(() => {
     // fetchData();
